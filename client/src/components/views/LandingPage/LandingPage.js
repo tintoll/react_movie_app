@@ -1,6 +1,8 @@
 import React , {useEffect, useState} from 'react'
 import { API_URL, API_KEY, IMAGE_BASE_URL} from '../../Config'
 import MainImage from './Sections/MainImage'
+import GridCards from '../commons/GridCards'
+import {Row} from 'antd'
 
 function LandingPage() {
 
@@ -40,8 +42,24 @@ function LandingPage() {
                 <hr />
 
                 {/* Grid Card */}
+                <Row gutter={[16,16]}>
+                {
+                    Movies && Movies.map((movie, index) => (
+                        <React.Fragment key={index}>
+                            <GridCards 
+                                image={movie.poster_path ?
+                                    `${IMAGE_BASE_URL}w500${movie.poster_path}` : null
+                                }
+                                movieId={movie.id}
+                                movideName={movie.original_title}
+                            />
+                        </React.Fragment>
+                    ))
+                }
+                </Row>
                  
             </div>
+            <br />
             <div style={{ display : 'flex', justifyContent : 'center'}}>
                 <button>load more</button>
             </div>
