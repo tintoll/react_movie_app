@@ -47,7 +47,7 @@ function LandingPage() {
             }
             
 
-            <div style={{ width:'85%', maring:'1rem auto'}}>
+            <div style={{ width:'85%', margin:'1rem auto'}}>
                 <h2>Movide by latest</h2>
                 <hr />
 
