@@ -5,12 +5,15 @@ import MovieInfo from './Sections/MovieInfo';
 import GridCards from './../commons/GridCards';
 import { Row } from 'antd';
 import Favorite from './Sections/Favorite';
+import Comment from './Sections/Comment';
+import Axios from 'axios';
 
 function MovieDetail(props) {
     let movieId = props.match.params.movieId;
     const [Movie, setMovie] = useState([])
     const [Casts, setCasts] = useState([])
     const [ActorToggle, setActorToggle] = useState(false)
+    const [Comments, setComments] = useState([])
 
     useEffect(() => {
         let endpointCrew = `${API_URL}movie/${movieId}/credits?api_key=${API_KEY}`;
@@ -28,8 +31,23 @@ function MovieDetail(props) {
             setCasts(data.cast);
         })
 
+        const variable = { movieId : movieId};
+        Axios.post('/api/comment/getComments', variable)
+            .then(response => {
+                if(response.data.success) {                    
+                    setComments(response.data.comments)
+                }else {
+                    alert('댓글들 정보 가져오기 실패 : ')
+                    console.log(response.data.err)
+                }
+            }) 
+
 
     }, [])
+
+    const refreshFunction = (newComment) => {
+        setComments(Comments.concat(newComment))
+    }
 
     const toggleActorView = () => {
         setActorToggle(!ActorToggle)
@@ -75,6 +93,10 @@ function MovieDetail(props) {
                     }
                     </Row>
                 }
+                
+                <br />
+                <Comment refreshFunction={refreshFunction} commentLists={Comments} videoId={movieId}/>
+
 
             </div>
         </div>
